@@ -214,9 +214,22 @@ public class GLController implements GLEventListener {
 
         Point3D vect = first.substract(second).normalize();
         Point3D vect2 = first.substract(second).normalize();
-        float tmpX = vect2.y;
-        vect2.y = vect2.x;
-        vect2.x = tmpX;
+        float tmpX = vect2.x;
+        vect2.x = vect2.z;
+        vect2.z = -tmpX;
+        Point3D vect3 = new Point3D(vect2);
+        float tmpX2 = vect2.z;
+        vect2.z = vect2.y;
+        vect2.y = -tmpX2;
+        gl.glBegin(GL.GL_LINES);
+        gl.glVertex3f(first.x, first.y, first.z);
+         gl.glVertex3f(first.x + vect.x * 10, first.y + vect.y * 10, first.z + vect.z * 10);
+          gl.glVertex3f(first.x, first.y, first.z);
+         gl.glVertex3f(first.x + vect2.x * 10, first.y + vect2.y * 10, first.z + vect2.z * 10);
+         
+          gl.glVertex3f(first.x, first.y, first.z);
+         gl.glVertex3f(first.x + vect3.x * 10, first.y + vect3.y * 10, first.z + vect3.z * 10);
+        gl.glEnd();
         Point3D leftBack = first.add(vect2.multiply(40));
         Point3D leftFront = first.add(vect2.multiply(-40));
         Point3D rightBack = second.add(vect2.multiply(40));
@@ -243,9 +256,9 @@ public class GLController implements GLEventListener {
         gl.glMapGrid2f(
                 5, 0.0f, 1.0f,
                 5, 0.0f, 1.0f);
-        gl.glEvalMesh2(GL.GL_LINE,
-                0, 5, /* Starting at 0 mesh 5 steps (rows). */
-                0, 5);  /* Starting at 0 mesh 6 steps (columns). */
+//        gl.glEvalMesh2(GL.GL_LINE,
+//                0, 5, /* Starting at 0 mesh 5 steps (rows). */
+//                0, 5);  /* Starting at 0 mesh 6 steps (columns). */
 
 
         gl.glLineWidth(5.0f);
