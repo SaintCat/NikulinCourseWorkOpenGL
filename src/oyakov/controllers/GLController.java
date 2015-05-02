@@ -228,7 +228,19 @@ public class GLController implements GLEventListener {
         ConfParmSubsystem.AppContext appContext = ConfParmSubsystem.getInstance().getCtxt();
         Point3D first = appContext.firstPoint;
         Point3D second = appContext.secondPoint;
+        gl.glColor3f(0, 0, 1);
         gl.glPointSize(10);
+        gl.glBegin(GL.GL_POINTS);
+        gl.glVertex3f(first.x, first.y, first.z);
+         gl.glVertex3f(second.x, second.y, second.z);
+         gl.glEnd();
+         gl.glLineWidth(1.6f);
+         gl.glColor3f(0, 0.8f, 0.3f);
+         gl.glBegin(GL.GL_LINES);
+          gl.glVertex3f(first.x, first.y, first.z);
+         gl.glVertex3f(second.x, second.y, second.z);
+         gl.glEnd();
+          gl.glLineWidth(1.0f);
 
         Point3D vect = first.substract(second).normalize();
         Point3D vect2 = first.substract(second).normalize();
@@ -251,12 +263,12 @@ public class GLController implements GLEventListener {
         gl.glRotatef(appContext.clipPlaneRotateAngle, vect.x, vect.y, vect.z);
         gl.glTranslatef(-second.x, -second.y, -second.z);
 
-        gl.glBegin(GL.GL_POINTS);
-        gl.glVertex3f(leftBack.x, leftBack.y, leftBack.z);
-        gl.glVertex3f(leftFront.x, leftFront.y, leftFront.z);
-        gl.glVertex3f(rightBack.x, rightBack.y, rightBack.z);
-        gl.glVertex3f(rightFront.x, rightFront.y, rightFront.z);
-        gl.glEnd();
+//        gl.glBegin(GL.GL_POINTS);
+//        gl.glVertex3f(leftBack.x, leftBack.y, leftBack.z);
+//        gl.glVertex3f(leftFront.x, leftFront.y, leftFront.z);
+//        gl.glVertex3f(rightBack.x, rightBack.y, rightBack.z);
+//        gl.glVertex3f(rightFront.x, rightFront.y, rightFront.z);
+//        gl.glEnd();
         gl.glColor3f(0, 0, 1);
         float grid2x2[] = new float[]{leftBack.x, leftBack.y, leftBack.z, leftFront.x, leftFront.y, leftFront.z,
             rightBack.x, rightBack.y, rightBack.z, rightFront.x, rightFront.y, rightFront.z};
