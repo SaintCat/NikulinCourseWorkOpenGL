@@ -27,10 +27,10 @@ public class MainViewFrame extends javax.swing.JFrame {
      */
     public MainViewFrame() {
         initComponents();
-        firstX.setModel(new SpinnerNumberModel(0, -2000, 2000, 0.2));
+        firstX.setModel(new SpinnerNumberModel(-10, -2000, 2000, 0.2));
         firstY.setModel(new SpinnerNumberModel(0, -2000, 2000, 0.2));
         firstZ.setModel(new SpinnerNumberModel(0, -2000, 2000, 0.2));
-        secondX.setModel(new SpinnerNumberModel(0, -2000, 2000, 0.2));
+        secondX.setModel(new SpinnerNumberModel(10, -2000, 2000, 0.2));
         secondY.setModel(new SpinnerNumberModel(0, -2000, 2000, 0.2));
         secondZ.setModel(new SpinnerNumberModel(0, -2000, 2000, 0.2));
         jSpinner1.addChangeListener(new ChangeListener() {
@@ -264,6 +264,7 @@ public class MainViewFrame extends javax.swing.JFrame {
         jLabel5.setText("Первая точка плоскости");
 
         firstX.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), null, null, Float.valueOf(1.0f)));
+        firstX.setRequestFocusEnabled(false);
 
         firstY.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), null, null, Float.valueOf(1.0f)));
 

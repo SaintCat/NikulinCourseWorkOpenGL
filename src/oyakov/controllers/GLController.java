@@ -1,5 +1,7 @@
 package oyakov.controllers;
 
+import com.sun.opengl.util.GLUT;
+import java.util.List;
 import oyakov.model.type.Renderable;
 import oyakov.runtime.ConfParmSubsystem;
 import oyakov.runtime.GLSubsystem;
@@ -29,9 +31,13 @@ import oyakov.model.type.Quard.DrawType;
 public class GLController implements GLEventListener {
 
     private static final Logger log = Logger.getLogger(GLController.class.getName());
+    ConfParmSubsystem.AppContext appContext = ConfParmSubsystem.getInstance().getCtxt();
 
     private GLU glUtils;
     private Point3D leftBack;
+    private Point3D leftFront;
+    private Point3D rightBack;
+    private Point3D rightFront;
 
     /**
      * Called back immediately after the OpenGL context is initialized. Can be
@@ -59,7 +65,6 @@ public class GLController implements GLEventListener {
         gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
 
-        ConfParmSubsystem.AppContext appContext = ConfParmSubsystem.getInstance().getCtxt();
         gl.glTranslatef(0, 5, -20);
         gl.glRotatef(-60, 1, 0, 0);
         gl.glTranslatef(appContext.cameraOffsetX, appContext.cameraOffsetY, appContext.cameraOffsetZ);
@@ -70,66 +75,8 @@ public class GLController implements GLEventListener {
         try {
             drawAxes(gl);
             drawClipPlane(gl);
-            gl.glEnable(GL.GL_CLIP_PLANE1);
-            Renderable cuboid1, cuboid2, cuboi1Copy, cuboid2Copy, cuboid3, cuboid3copy;
-            Point3D first = appContext.firstPoint;
-            Point3D second = appContext.secondPoint;
-            Point3D vector = Utils.getNormalVectorByMatrix(getKefByPoints(first, second, leftBack));
-            vector = vector.normalize();
-            Utils.rorateAroundAxis(vector, first.substract(second).normalize(), Math.toRadians(appContext.clipPlaneRotateAngle));
-
-            double equation[] = Utils.getMatrixByPointAndNormalVectors(first, vector);
-            gl.glBegin(GL.GL_LINES);
-            gl.glVertex3f(first.x, first.y, first.z);
-            gl.glVertex3f(first.x + vector.x * 5, first.y + vector.y * 5, first.z + vector.z * 5);
-            gl.glEnd();
-            gl.glClipPlane(GL.GL_CLIP_PLANE1, equation, 0);
-
-            cuboid1 = GLSubsystem.getInstance().getEntity("cuboid1", MeshType.QUARD);
-            cuboi1Copy = GLSubsystem.getInstance().copy("cuboid1copy", cuboid1);
-            gl.glRotatef(appContext.firstCubeAngle, 0.0f, 0.0f, 1.0f);
-            cuboid1.renderSelf(gl, glUtils, DrawType.FILL);
-            gl.glDisable(GL.GL_CLIP_PLANE1);
-            cuboi1Copy.renderSelf(gl, glUtils, DrawType.LINE);
-            gl.glEnable(GL.GL_CLIP_PLANE1);
-//            gl.glRotatef(-angle, 0.0f, 0.0f, 1.0f);
-
-            cuboid2 = GLSubsystem.getInstance().copy("cuboid2", cuboid1);
-            cuboid2Copy = GLSubsystem.getInstance().copy("cuboid2copy", cuboid2);
-            gl.glRotatef(90, 0.0f, 1.0f, 0.0f);
-            gl.glTranslatef(-2, 0, 4);
-            gl.glRotatef(appContext.secondCubeAngle, 0.0f, 0.0f, 1.0f);
-
-//            gl.glTranslatef(-2, -2, -2);
-//            gl.glRotatef(angle += 0.1, -1.0f, 0.0f, 0.0f);
-//            gl.glTranslatef(2, 2, 2);
-            cuboid2.renderSelf(gl, glUtils, DrawType.FILL);
-
-            gl.glDisable(GL.GL_CLIP_PLANE1);
-            cuboid2Copy.renderSelf(gl, glUtils, DrawType.LINE);
-            gl.glTranslatef(2, 0, -4);
-            gl.glEnable(GL.GL_CLIP_PLANE1);
-
-            gl.glRotatef(-90, 0.0f, 1.0f, 0.0f);
-
-            gl.glTranslatef(8, 0, 0);
-            cuboid3 = GLSubsystem.getInstance().copy("cuboid3", cuboid2);
-            cuboid3copy = GLSubsystem.getInstance().copy("cuboid3copy", cuboid2);
-
-            gl.glTranslatef(0, 0, 2);
-            gl.glRotatef(appContext.thirdCubeAngle, 1.0f, 0.0f, 0.0f);
-            gl.glTranslatef(0, 0, -2);
-            cuboid3.renderSelf(gl, glUtils, DrawType.FILL);
-            gl.glDisable(GL.GL_CLIP_PLANE1);
-            cuboid3copy.renderSelf(gl, glUtils, DrawType.LINE);
-
-//            gl.glRotatef(90, 0.0f, 1.0f, 0.0f);
-//            gl.glRotatef(-angle, 0.0f, 0.0f, 1.0f);
-//            gl.glRotatef(-90, 0.0f, 1.0f, 0.0f);
-//            gl.glTranslatef(-8, 0, 0);
-            gl.glEnable(GL.GL_CLIP_PLANE1);
-            gl.glRotatef(-angle, 0.0f, 0.0f, 1.0f);
-            gl.glDisable(GL.GL_CLIP_PLANE1);
+            render(gl);
+//****** End rendering mesh's clip edge ****//
 
 //            gl.glRotatef(angle += 0.1, +1.0f, 0.0f, 0.0f);
 //            gl.glRotatef(90, 0.0f, 1.0f, 0.0f);
@@ -144,11 +91,82 @@ public class GLController implements GLEventListener {
 //            gl.glRotatef(appContext.rightWingAngle, 0.0f, 0.0f, 1.0f);
 //            right_wing.renderSelf(gl, glUtils);
 //            gl.glRotatef(appContext.rightWingAngle, 0.0f, 0.0f, -1.0f);
+            gl.glFlush();
         } catch (Exception ex) {
             //TODO: Custom exception type
             log.info("Couldn't load geometry");
-            log.info(ex.getMessage());
+            ex.printStackTrace();
         }
+    }
+
+    private void render(GL gl) {
+        gl.glPushMatrix();
+        gl.glEnable(GL.GL_CLIP_PLANE1);
+        Renderable cuboid1 = null, cuboid2, cuboi1Copy, cuboid2Copy, cuboid3, cuboid3copy;
+        cuboid1 = GLSubsystem.getInstance().getEntity("cuboid1", MeshType.QUARD);
+        cuboid1.loadDefaultPoints();
+        cuboi1Copy = GLSubsystem.getInstance().copy("cuboid1copy", cuboid1);
+        cuboid2 = GLSubsystem.getInstance().copy("cuboid2", cuboid1);
+        cuboid2.loadDefaultPoints();
+        cuboid2Copy = GLSubsystem.getInstance().copy("cuboid2copy", cuboid2);
+        cuboid3 = GLSubsystem.getInstance().copy("cuboid3", cuboid2);
+        cuboid3.loadDefaultPoints();
+        cuboid3copy = GLSubsystem.getInstance().copy("cuboid3copy", cuboid2);
+        Point3D first = appContext.firstPoint;
+        Point3D second = appContext.secondPoint;
+        Point3D vector = Utils.getNormalVectorByMatrix(getKefByPoints(first, second, leftBack));
+        vector = vector.normalize();
+        Utils.rorateAroundAxis(vector, first.substract(second).normalize(), Math.toRadians(appContext.clipPlaneRotateAngle));
+
+        double equation[] = Utils.getMatrixByPointAndNormalVectors(first, vector);
+
+        gl.glClipPlane(GL.GL_CLIP_PLANE1, equation, 0);
+        gl.glPushMatrix();
+        cuboid1.rotateAroundAxis(new Point3D(0, 0, 1), Math.toRadians(appContext.firstCubeAngle));
+        List<Point3D> ress = cuboid1.getIntersectionPoints(first, vector);
+        cuboid1.renderSelfByPoints(gl, glUtils, DrawType.FILL);
+        gl.glDisable(GL.GL_CLIP_PLANE1);
+        cuboid1.renderSelfByPoints(gl, glUtils, DrawType.LINE);
+        drawPoints(ress, gl);
+        gl.glEnable(GL.GL_CLIP_PLANE1);
+        gl.glPopMatrix();
+
+        gl.glPushMatrix();
+        cuboid2.rotateAroundAxis(new Point3D(0, 1, 0), Math.toRadians(90));
+        Point3D firstCopy = new Point3D(first);
+        Point3D normalCopy = new Point3D(vector);
+        cuboid2.rotateAroundAxis(new Point3D(1, 0, 0), Math.toRadians(appContext.secondCubeAngle));
+        cuboid2.translateXCoor(4);
+        cuboid2.translateZCoor(2);
+
+        cuboid2.rotateAroundAxis(new Point3D(0, 0, 1), Math.toRadians(appContext.firstCubeAngle));
+
+        ress = cuboid2.getIntersectionPoints(firstCopy, normalCopy);
+        cuboid2.renderSelfByPoints(gl, glUtils, DrawType.FILL);
+        gl.glDisable(GL.GL_CLIP_PLANE1);
+        cuboid2.renderSelfByPoints(gl, glUtils, DrawType.LINE);
+        drawPoints(ress, gl);
+        gl.glDisable(GL.GL_CLIP_PLANE1);
+        gl.glPopMatrix();
+        gl.glPushMatrix();
+        gl.glEnable(GL.GL_CLIP_PLANE1);
+       
+
+    
+//        
+        cuboid3.translateZCoor(-2);
+        cuboid3.rotateAroundAxis(new Point3D(1, 0, 0), Math.toRadians(appContext.secondCubeAngle));
+        cuboid3.rotateAroundAxis(new Point3D(1, 0, 0), Math.toRadians(appContext.thirdCubeAngle));
+        cuboid3.translateZCoor(2);
+         cuboid3.translateXCoor(8);
+             cuboid3.rotateAroundAxis(new Point3D(0, 0, 1), Math.toRadians(appContext.firstCubeAngle));
+               ress = cuboid3.getIntersectionPoints(firstCopy, normalCopy);
+        cuboid3.renderSelfByPoints(gl, glUtils, DrawType.FILL);
+        gl.glDisable(GL.GL_CLIP_PLANE1);
+        cuboid3.renderSelfByPoints(gl, glUtils, DrawType.LINE);
+        drawPoints(ress, gl);
+        gl.glDisable(GL.GL_CLIP_PLANE1);
+        gl.glPopMatrix();
     }
 
     /**
@@ -171,7 +189,7 @@ public class GLController implements GLEventListener {
         // Setup perspective projection, with aspect ratio matches viewport
         glContext.glMatrixMode(GL_PROJECTION);  // choose projection matrix
         glContext.glLoadIdentity();             // reset projection matrix
-        glUtils.gluPerspective(45.0, aspect, 0.1, 100.0); // fovy, aspect, zNear, zFar
+        glUtils.gluPerspective(45.0, aspect, 0.01, 100.0); // fovy, aspect, zNear, zFar
 
         // Enable the model-view transform
         glContext.glMatrixMode(GL_MODELVIEW);
@@ -204,17 +222,12 @@ public class GLController implements GLEventListener {
     }
 
     private void drawClipPlane(GL gl) {
+        gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+        gl.glDepthMask(false);
         ConfParmSubsystem.AppContext appContext = ConfParmSubsystem.getInstance().getCtxt();
         Point3D first = appContext.firstPoint;
         Point3D second = appContext.secondPoint;
         gl.glPointSize(10);
-        gl.glBegin(GL.GL_POINTS);
-        gl.glVertex3f(first.x, first.y, first.z);
-        gl.glEnd();
-
-        gl.glBegin(GL.GL_POINTS);
-        gl.glVertex3f(second.x, second.y, second.z);
-        gl.glEnd();
 
         Point3D vect = first.substract(second).normalize();
         Point3D vect2 = first.substract(second).normalize();
@@ -223,27 +236,13 @@ public class GLController implements GLEventListener {
         vect2.x = vect2.y;
         vect2.y = -tmpX;
 
-        Point3D vect3 = new Point3D(vect2);
-//        float tmpX2 = vect2.x;
-//        vect2.x = vect2.y;
-//        vect2.y = tmpX2;
-        gl.glBegin(GL.GL_LINES);
-        gl.glColor3f(1f, 0f, 0f);
-//        gl.glVertex3f(first.x, first.y, first.z);
-//        gl.glVertex3f(first.x + vect.x * 10, first.y + vect.y * 10, first.z + vect.z * 10);
-        gl.glVertex3f(first.x, first.y, first.z);
-        gl.glVertex3f(first.x + vect2.x * 10, first.y + vect2.y * 10, first.z);
-
-        gl.glVertex3f(first.x, first.y, first.z);
-        gl.glVertex3f(first.x + vect3.x * 10, first.y + vect3.y * 10, first.z + vect3.z * 10);
-        gl.glEnd();
         leftBack = first.add(vect2.multiply(-20));
         leftBack.z = first.z;
-        Point3D leftFront = first.add(vect2.multiply(20));
+        leftFront = first.add(vect2.multiply(20));
         leftFront.z = first.z;
-        Point3D rightBack = second.add(vect2.multiply(-20));
+        rightBack = second.add(vect2.multiply(-20));
         rightBack.z = second.z;
-        Point3D rightFront = second.add(vect2.multiply(20));
+        rightFront = second.add(vect2.multiply(20));
         rightFront.z = second.z;
 
         gl.glPushMatrix();
@@ -282,7 +281,7 @@ public class GLController implements GLEventListener {
 //        gl.glRotatef(appContext.clipPlaneRotateAngle += 0.2, res.x, res.y, res.z);
         gl.glBegin(GL.GL_LINE_LOOP);
 
-        gl.glColor3f(1f, 0f, 0f);
+        gl.glColor4f(1f, 0f, 0f, 0.1f);
 
 //        gl.glTranslated(0, 0, first.z);
         gl.glVertex3f(leftBack.x, leftBack.y, first.z);
@@ -299,11 +298,11 @@ public class GLController implements GLEventListener {
 //        gl.glTranslatef(first.x, first.y, first.z);
         gl.glRotatef(-appContext.clipPlaneRotateAngle, vect.x, vect.y, vect.z);
         gl.glPopMatrix();
-        System.out.println("Rotate first on angle: " + -appContext.clipPlaneRotateAngle + " aroung "
-                + +vect.x + " " + vect.y + " " + vect.z);
 //        gl.glRotatef(-appContext.clipPlaneRotateAngle, 0, 0.5f, 0.5f);
 //        gl.glTranslatef(-first.x, -first.y, -first.z);
 //        gl.glRotatef(-appContext.clipPlaneRotateAngle, res.x, res.y, res.z);
+
+        gl.glDepthMask(true);
     }
 
     public double[] getKefByPoints(Point3D a, Point3D b, Point3D c) {
@@ -321,11 +320,11 @@ public class GLController implements GLEventListener {
 //        arr[2] = (float) MatrixOperations.det(MatrixOperations.transpose(C));
 //        arr[3] = (float) MatrixOperations.det(MatrixOperations.transpose(D));
 //        return arr;
-        double k2 = a.x - b.x;
-
-        if (k2 == 0) {
-            return arr;
-        }
+//        double k2 = a.x - b.x;
+//
+//        if (k2 == 0) {
+//            return arr;
+//        }
 
         //-------------------
         arr[0] = a.y * (b.z - c.z) + b.y * (c.z - a.z) + c.y * (a.z - b.z);
@@ -335,6 +334,36 @@ public class GLController implements GLEventListener {
                 + c.x * (a.y * b.z - b.y * a.z));
         return arr;
 
+    }
+
+    private float POINT_RADIUS = 0.2f;
+    private void drawPoints(List<Point3D> ress, GL gl) {
+        gl.glPushMatrix();
+        gl.glColor3f(1, 0, 0);
+        gl.glBegin(GL.GL_POINTS);
+        gl.glPointSize(2.0f);
+        for (Point3D p : ress) {
+            gl.glVertex3f(p.x, p.y, p.z);
+        }
+        gl.glPointSize(1.0f);
+        gl.glEnd();
+        gl.glColor3f((float)191f/255f,(float)193f/255f,(float)24f/255f);
+        gl.glBegin(GL.GL_POLYGON);
+        for (Point3D p : ress) {
+            gl.glVertex3f(p.x, p.y, p.z);
+        }
+        gl.glEnd();
+        gl.glPopMatrix();
+    }
+
+    public static void rorateAroundAxis(Point3D p, Point3D axis, double angle) {
+        double[][] matr = MatrixOperations.createRotateMatrixAroundAxis(axis, angle);
+        double[][] pointMatrix = new double[][]{{p.x, p.y, p.z}};
+        pointMatrix = MatrixOperations.transpose(pointMatrix);
+        pointMatrix = MatrixOperations.multiply(matr, pointMatrix);
+        p.x = (float) pointMatrix[0][0];
+        p.y = (float) pointMatrix[1][0];
+        p.z = (float) pointMatrix[2][0];
     }
 
 }

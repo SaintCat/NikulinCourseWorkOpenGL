@@ -1,5 +1,6 @@
 package oyakov.model.type;
 
+import java.util.List;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import oyakov.model.type.Quard.DrawType;
@@ -62,5 +63,45 @@ public class Triangle implements Renderable {
     @Override
     public Renderable copy() {
         return new Triangle(this);
+    }
+
+    @Override
+    public List<Point3D> getIntersectionPoints(Point3D p, Point3D normal) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void loadDefaultPoints() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void rorateXAxis(double angle) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void translateXCoor(double value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void translateYCoor(double value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void translateZCoor(double value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void rotateAroundAxis(Point3D axis, double angle) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void renderSelfByPoints(GL context, GLU glUtils, DrawType type) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -42,4 +42,60 @@ public class Entity implements Renderable {
         });
         return new Entity(result);
     }
+
+    @Override
+    public List<Point3D> getIntersectionPoints(Point3D p, Point3D normal) {
+        List<Point3D> result = new ArrayList<>();
+        for (Renderable re : geometry) {
+            result.addAll(re.getIntersectionPoints(p, normal));
+        }
+        return result;
+    }
+
+    @Override
+    public void loadDefaultPoints() {
+        for (Renderable re : geometry) {
+            re.loadDefaultPoints();
+        }
+    }
+
+    @Override
+    public void rorateXAxis(double angle) {
+        for (Renderable re : geometry) {
+            re.rorateXAxis(angle);
+        }
+    }
+
+    @Override
+    public void translateXCoor(double value) {
+        for (Renderable re : geometry) {
+            re.translateXCoor(value);
+        }
+    }
+
+    @Override
+    public void translateYCoor(double value) {
+        for (Renderable re : geometry) {
+            re.translateYCoor(value);
+        }
+    }
+
+    @Override
+    public void translateZCoor(double value) {
+        for (Renderable re : geometry) {
+            re.translateZCoor(value);
+        }
+    }
+
+    @Override
+    public void rotateAroundAxis(Point3D axis, double angle) {
+        for (Renderable re : geometry) {
+            re.rotateAroundAxis(axis, angle);
+        }
+    }
+
+    @Override
+    public void renderSelfByPoints(GL context, GLU glUtils, DrawType type) {
+        geometry.forEach(e -> e.renderSelfByPoints(context, glUtils, type));
+    }
 }
