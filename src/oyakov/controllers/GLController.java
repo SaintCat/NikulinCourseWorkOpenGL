@@ -74,8 +74,9 @@ public class GLController implements GLEventListener {
 
         try {
             drawAxes(gl);
-            drawClipPlane(gl);
+          drawClipPlane(gl);
             render(gl);
+               drawClipPlane(gl);
 //****** End rendering mesh's clip edge ****//
 
 //            gl.glRotatef(angle += 0.1, +1.0f, 0.0f, 0.0f);
@@ -256,7 +257,7 @@ public class GLController implements GLEventListener {
         gl.glVertex3f(rightBack.x, rightBack.y, rightBack.z);
         gl.glVertex3f(rightFront.x, rightFront.y, rightFront.z);
         gl.glEnd();
-
+        gl.glColor3f(0, 0, 1);
         float grid2x2[] = new float[]{leftBack.x, leftBack.y, leftBack.z, leftFront.x, leftFront.y, leftFront.z,
             rightBack.x, rightBack.y, rightBack.z, rightFront.x, rightFront.y, rightFront.z};
         gl.glEnable(GL.GL_MAP2_VERTEX_3);
