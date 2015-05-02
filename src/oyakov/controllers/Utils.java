@@ -14,11 +14,11 @@ import oyakov.model.type.Point3D;
  */
 public class Utils {
 
-    public Point3D getNormalVectorByMatrix(double[] matrix) {
+    public static Point3D getNormalVectorByMatrix(double[] matrix) {
         return new Point3D((float) matrix[0], (float) matrix[1], (float) matrix[2]);
     }
 
-    public Point3D getPointByMatrix(double[] matrix) {
+    public static Point3D getPointByMatrix(double[] matrix) {
         Point3D n = getNormalVectorByMatrix(matrix);
         Point3D o = n.multiply((float) (matrix[3] / n.dotProduct(n)));
         return o;

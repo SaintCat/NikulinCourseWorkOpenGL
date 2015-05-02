@@ -31,6 +31,7 @@ public class GLController implements GLEventListener {
     private static final Logger log = Logger.getLogger(GLController.class.getName());
 
     private GLU glUtils;
+    private Point3D leftBack;
 
     /**
      * Called back immediately after the OpenGL context is initialized. Can be
@@ -73,12 +74,15 @@ public class GLController implements GLEventListener {
             Renderable cuboid1, cuboid2, cuboi1Copy, cuboid2Copy, cuboid3, cuboid3copy;
             Point3D first = appContext.firstPoint;
             Point3D second = appContext.secondPoint;
-            Point3D vector = first.substract(second).normalize();
-            float tmpX = vector.x;
-            vector.x = vector.z;
-            vector.z = -tmpX;
+            Point3D vector = Utils.getNormalVectorByMatrix(getKefByPoints(first, second, leftBack));
+            vector = vector.normalize();
             Utils.rorateAroundAxis(vector, first.substract(second).normalize(), Math.toRadians(appContext.clipPlaneRotateAngle));
+
             double equation[] = Utils.getMatrixByPointAndNormalVectors(first, vector);
+            gl.glBegin(GL.GL_LINES);
+            gl.glVertex3f(first.x, first.y, first.z);
+            gl.glVertex3f(first.x + vector.x * 5, first.y + vector.y * 5, first.z + vector.z * 5);
+            gl.glEnd();
             gl.glClipPlane(GL.GL_CLIP_PLANE1, equation, 0);
 
             cuboid1 = GLSubsystem.getInstance().getEntity("cuboid1", MeshType.QUARD);
@@ -214,39 +218,48 @@ public class GLController implements GLEventListener {
 
         Point3D vect = first.substract(second).normalize();
         Point3D vect2 = first.substract(second).normalize();
+        System.out.println(vect2);
         float tmpX = vect2.x;
-        vect2.x = vect2.z;
-        vect2.z = -tmpX;
-        Point3D vect3 = new Point3D(vect2);
-        float tmpX2 = vect2.x;
         vect2.x = vect2.y;
-        vect2.y = -tmpX2;
+        vect2.y = -tmpX;
+
+        Point3D vect3 = new Point3D(vect2);
+//        float tmpX2 = vect2.x;
+//        vect2.x = vect2.y;
+//        vect2.y = tmpX2;
         gl.glBegin(GL.GL_LINES);
+        gl.glColor3f(1f, 0f, 0f);
+//        gl.glVertex3f(first.x, first.y, first.z);
+//        gl.glVertex3f(first.x + vect.x * 10, first.y + vect.y * 10, first.z + vect.z * 10);
         gl.glVertex3f(first.x, first.y, first.z);
-         gl.glVertex3f(first.x + vect.x * 10, first.y + vect.y * 10, first.z + vect.z * 10);
-          gl.glVertex3f(first.x, first.y, first.z);
-         gl.glVertex3f(first.x + vect2.x * 10, first.y + vect2.y * 10, first.z);
-         
-          gl.glVertex3f(first.x, first.y, first.z);
-         gl.glVertex3f(first.x + vect3.x * 10, first.y + vect3.y * 10, first.z + vect3.z * 10);
+        gl.glVertex3f(first.x + vect2.x * 10, first.y + vect2.y * 10, first.z);
+
+        gl.glVertex3f(first.x, first.y, first.z);
+        gl.glVertex3f(first.x + vect3.x * 10, first.y + vect3.y * 10, first.z + vect3.z * 10);
         gl.glEnd();
-        Point3D leftBack = first.add(vect3.multiply(-40));
+        leftBack = first.add(vect2.multiply(-20));
         leftBack.z = first.z;
-        Point3D leftFront = first.add(vect3.multiply(40));
-         leftFront.z = first.z;
-        Point3D rightBack = second.add(vect3.multiply(-40));
-         rightBack.z = second.z;
-        Point3D rightFront = second.add(vect3.multiply(40));
-         rightFront.z = second.z;
-        System.out.println("Rotate first on angle: " + appContext.clipPlaneRotateAngle + " aroung "
-                + +vect.x + " " + vect.y + " " + vect.z);
+        Point3D leftFront = first.add(vect2.multiply(20));
+        leftFront.z = first.z;
+        Point3D rightBack = second.add(vect2.multiply(-20));
+        rightBack.z = second.z;
+        Point3D rightFront = second.add(vect2.multiply(20));
+        rightFront.z = second.z;
+
         gl.glPushMatrix();
         gl.glTranslatef(second.x, second.y, second.z);
         gl.glRotatef(appContext.clipPlaneRotateAngle, vect.x, vect.y, vect.z);
         gl.glTranslatef(-second.x, -second.y, -second.z);
 
-        float grid2x2[] = new float[]{-10.0f, -10.0f, leftBack.z, -10.0f, 10.0f, leftFront.z,
-            10.0f, -10.0f, rightBack.z, 10.0f, 10.0f, rightFront.z};
+        gl.glBegin(GL.GL_POINTS);
+        gl.glVertex3f(leftBack.x, leftBack.y, leftBack.z);
+        gl.glVertex3f(leftFront.x, leftFront.y, leftFront.z);
+        gl.glVertex3f(rightBack.x, rightBack.y, rightBack.z);
+        gl.glVertex3f(rightFront.x, rightFront.y, rightFront.z);
+        gl.glEnd();
+
+        float grid2x2[] = new float[]{leftBack.x, leftBack.y, leftBack.z, leftFront.x, leftFront.y, leftFront.z,
+            rightBack.x, rightBack.y, rightBack.z, rightFront.x, rightFront.y, rightFront.z};
         gl.glEnable(GL.GL_MAP2_VERTEX_3);
         gl.glMap2f(GL.GL_MAP2_VERTEX_3,
                 0.0f, 1.0f, /* U ranges 0..1 */
@@ -272,12 +285,13 @@ public class GLController implements GLEventListener {
         gl.glColor3f(1f, 0f, 0f);
 
 //        gl.glTranslated(0, 0, first.z);
-        gl.glVertex3f(-10, -10, first.z);
-        gl.glVertex3f(-10, 10, first.z);
+        gl.glVertex3f(leftBack.x, leftBack.y, first.z);
+        gl.glVertex3f(leftFront.x, leftFront.y, first.z);
 //        gl.glTranslated(0, 0, -first.z);
 //        gl.glTranslated(0, 0, second.z);
-        gl.glVertex3f(10, 10, second.z);
-        gl.glVertex3f(10, -10, second.z);
+        gl.glVertex3f(rightFront.x, rightFront.y, second.z);
+        gl.glVertex3f(rightBack.x, rightBack.y, second.z);
+
 //         gl.glTranslated(0, 0, -second.z);
         gl.glEnd();
         gl.glLineWidth(1.0f);
@@ -290,6 +304,37 @@ public class GLController implements GLEventListener {
 //        gl.glRotatef(-appContext.clipPlaneRotateAngle, 0, 0.5f, 0.5f);
 //        gl.glTranslatef(-first.x, -first.y, -first.z);
 //        gl.glRotatef(-appContext.clipPlaneRotateAngle, res.x, res.y, res.z);
+    }
+
+    public double[] getKefByPoints(Point3D a, Point3D b, Point3D c) {
+        double[] arr = new double[4];
+        arr[0] = 0;
+        arr[1] = 0;
+        arr[2] = 0;
+        arr[3] = 0;
+//        double[][] A = new double[][]{{1, a.y, a.z}, {1, b.y, b.z}, {1, c.y, c.z}};
+//        double[][] B = new double[][]{{a.x, 1, a.z}, {b.x, 1, b.z}, {c.x, 1, c.z}};
+//        double[][] C = new double[][]{{a.x, a.y, 1}, {b.x, b.y, 1}, {c.x, c.y, 1}};
+//        double[][] D = new double[][]{{a.z, a.y, a.x}, {b.y, b.y, b.x}, {c.y, c.y, c.x}};
+//        arr[0] = (float) MatrixOperations.det(MatrixOperations.transpose(A));
+//        arr[1] = (float) MatrixOperations.det(MatrixOperations.transpose(B));
+//        arr[2] = (float) MatrixOperations.det(MatrixOperations.transpose(C));
+//        arr[3] = (float) MatrixOperations.det(MatrixOperations.transpose(D));
+//        return arr;
+        double k2 = a.x - b.x;
+
+        if (k2 == 0) {
+            return arr;
+        }
+
+        //-------------------
+        arr[0] = a.y * (b.z - c.z) + b.y * (c.z - a.z) + c.y * (a.z - b.z);
+        arr[1] = a.z * (b.x - c.x) + b.z * (c.x - a.x) + c.z * (a.x - b.x);
+        arr[2] = a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y);
+        arr[3] = -(a.x * (b.y * c.z - c.y * b.z) + b.x * (c.y * a.z - a.y * c.z)
+                + c.x * (a.y * b.z - b.y * a.z));
+        return arr;
+
     }
 
 }
