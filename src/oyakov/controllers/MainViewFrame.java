@@ -147,6 +147,12 @@ public class MainViewFrame extends javax.swing.JFrame {
                 if (planeRight.isSelected()) {
                     jSpinner4.setValue(((Integer) jSpinner4.getValue()) + 1);
                 }
+                if(cameraOffsetXPlus.getModel().isPressed()) {
+                    appContext.cameraOffsetY+=1;
+                }
+                 if(cameraOffsetXMinus.getModel().isPressed()) {
+                    appContext.cameraOffsetY-=1;
+                }
             }
         });
         timer.start();
@@ -192,6 +198,9 @@ public class MainViewFrame extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         firstZ = new javax.swing.JSpinner();
         secondZ = new javax.swing.JSpinner();
+        jLabel10 = new javax.swing.JLabel();
+        cameraOffsetXPlus = new javax.swing.JButton();
+        cameraOffsetXMinus = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -292,6 +301,12 @@ public class MainViewFrame extends javax.swing.JFrame {
 
         secondZ.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), null, null, Float.valueOf(1.0f)));
 
+        jLabel10.setText("Камера");
+
+        cameraOffsetXPlus.setText("<<");
+
+        cameraOffsetXMinus.setText(">>");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -359,7 +374,12 @@ public class MainViewFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(firstZ, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(firstZ, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel10)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cameraOffsetXPlus)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cameraOffsetXMinus))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -414,6 +434,12 @@ public class MainViewFrame extends javax.swing.JFrame {
                             .addComponent(jLabel15)
                             .addComponent(jLabel16)
                             .addComponent(secondZ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cameraOffsetXPlus)
+                            .addComponent(cameraOffsetXMinus))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE))
                 .addContainerGap())
@@ -460,12 +486,15 @@ public class MainViewFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton ThirdLeft;
+    private javax.swing.JButton cameraOffsetXMinus;
+    private javax.swing.JButton cameraOffsetXPlus;
     private javax.swing.JToggleButton firstLeft;
     private javax.swing.JToggleButton firstRight;
     private javax.swing.JSpinner firstX;
     private javax.swing.JSpinner firstY;
     private javax.swing.JSpinner firstZ;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;

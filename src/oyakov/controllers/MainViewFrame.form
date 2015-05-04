@@ -97,6 +97,12 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="firstZ" min="-2" pref="40" max="-2" attributes="0"/>
                   </Group>
+                  <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="cameraOffsetXPlus" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="cameraOffsetXMinus" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
           </Group>
       </Group>
@@ -159,6 +165,13 @@
                           <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="secondZ" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="cameraOffsetXPlus" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cameraOffsetXMinus" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -355,6 +368,21 @@
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
           <SpinnerModel initial="0.0" numberType="java.lang.Float" stepSize="1.0" type="number"/>
         </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel10">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x41a;&#x430;&#x43c;&#x435;&#x440;&#x430;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="cameraOffsetXPlus">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&lt;&lt;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="cameraOffsetXMinus">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&gt;&gt;"/>
       </Properties>
     </Component>
   </SubComponents>

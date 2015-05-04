@@ -76,7 +76,7 @@ public class GLController implements GLEventListener {
         gl.glRotatef(appContext.cameraAngleX, 1.0f, 0.0f, 0.0f);
         gl.glRotatef(appContext.cameraAngleY, 0.0f, 1.0f, 0.0f);
         gl.glRotatef(appContext.cameraAngleZ, 0.0f, 0.0f, 1.0f);
-
+        currentView.add(0, appContext.cameraOffsetY, 0);
         try {
             drawAxes(gl);
             drawClipPlane(gl);
