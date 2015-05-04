@@ -23,6 +23,7 @@ import javax.media.opengl.glu.GLU;
 import oyakov.model.type.MatrixOperations;
 import oyakov.model.type.MeshType;
 import oyakov.model.type.Point3D;
+import oyakov.model.type.Quard;
 import oyakov.model.type.Quard.DrawType;
 
 /**
@@ -38,6 +39,7 @@ public class GLController implements GLEventListener {
     private Point3D leftFront;
     private Point3D rightBack;
     private Point3D rightFront;
+    private Point3D currentView = new Point3D(0, -10, 20);
 
     /**
      * Called back immediately after the OpenGL context is initialized. Can be
@@ -55,18 +57,21 @@ public class GLController implements GLEventListener {
         glContext.glShadeModel(GL_SMOOTH); // blends colors nicely, and smoothes out lighting
     }
     private float angle = 0;
-
+    private GLU glu = new GLU();
+    
     /**
      * Called back by the animator to perform rendering.
      */
     @Override
     public void display(GLAutoDrawable glAutoDrawable) {
+        currentView = new Point3D(0,10,-40);
         GL gl = glAutoDrawable.getGL();
         gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
-
-        gl.glTranslatef(0, 5, -20);
+        gl.glTranslatef(0, 10, -20);
         gl.glRotatef(-60, 1, 0, 0);
+       
+       Utils.rorateAroundAxis(currentView, new Point3D(1,0,0), Math.toRadians(60));
         gl.glTranslatef(appContext.cameraOffsetX, appContext.cameraOffsetY, appContext.cameraOffsetZ);
         gl.glRotatef(appContext.cameraAngleX, 1.0f, 0.0f, 0.0f);
         gl.glRotatef(appContext.cameraAngleY, 0.0f, 1.0f, 0.0f);
@@ -74,24 +79,9 @@ public class GLController implements GLEventListener {
 
         try {
             drawAxes(gl);
-          drawClipPlane(gl);
+            drawClipPlane(gl);
             render(gl);
-               drawClipPlane(gl);
-//****** End rendering mesh's clip edge ****//
-
-//            gl.glRotatef(angle += 0.1, +1.0f, 0.0f, 0.0f);
-//            gl.glRotatef(90, 0.0f, 1.0f, 0.0f);
-//            gl.glRotatef(angle, 0.0f, 0.0f, -1.0f);
-//            gl.glRotatef(angle, 0.0f, 0.0f, -1.0f);
-//            left_wing = GLSubsystem.getInstance().getEntity("left_wing", MeshType.TRIANGLE);
-//            gl.glTranslatef(0.0f, 1.0f, 0.0f);
-//            gl.glRotatef(appContext.leftWingAngle, 0.0f, 0.0f, 1.0f);
-//            left_wing.renderSelf(gl, glUtils);
-//            gl.glRotatef(appContext.leftWingAngle, 0.0f, 0.0f, -1.0f);
-            //right_wing = GLSubsystem.getInstance().mirrorX("right_wing", left_wing);
-//            gl.glRotatef(appContext.rightWingAngle, 0.0f, 0.0f, 1.0f);
-//            right_wing.renderSelf(gl, glUtils);
-//            gl.glRotatef(appContext.rightWingAngle, 0.0f, 0.0f, -1.0f);
+            drawClipPlane(gl);
             gl.glFlush();
         } catch (Exception ex) {
             //TODO: Custom exception type
@@ -120,6 +110,11 @@ public class GLController implements GLEventListener {
         Utils.rorateAroundAxis(vector, first.substract(second).normalize(), Math.toRadians(appContext.clipPlaneRotateAngle));
 
         double equation[] = Utils.getMatrixByPointAndNormalVectors(first, vector);
+        float nfN = currentView.substract(first).dotProduct(vector);
+        if (nfN < 0) {
+            equation = Utils.getMatrixByPointAndNormalVectors(first, vector.multiply(-1));
+
+        }
 
         gl.glClipPlane(GL.GL_CLIP_PLANE1, equation, 0);
         gl.glPushMatrix();
@@ -151,17 +146,15 @@ public class GLController implements GLEventListener {
         gl.glPopMatrix();
         gl.glPushMatrix();
         gl.glEnable(GL.GL_CLIP_PLANE1);
-       
 
-    
 //        
         cuboid3.translateZCoor(-2);
         cuboid3.rotateAroundAxis(new Point3D(1, 0, 0), Math.toRadians(appContext.secondCubeAngle));
         cuboid3.rotateAroundAxis(new Point3D(1, 0, 0), Math.toRadians(appContext.thirdCubeAngle));
         cuboid3.translateZCoor(2);
-         cuboid3.translateXCoor(8);
-             cuboid3.rotateAroundAxis(new Point3D(0, 0, 1), Math.toRadians(appContext.firstCubeAngle));
-               ress = cuboid3.getIntersectionPoints(firstCopy, normalCopy);
+        cuboid3.translateXCoor(8);
+        cuboid3.rotateAroundAxis(new Point3D(0, 0, 1), Math.toRadians(appContext.firstCubeAngle));
+        ress = cuboid3.getIntersectionPoints(firstCopy, normalCopy);
         cuboid3.renderSelfByPoints(gl, glUtils, DrawType.FILL);
         gl.glDisable(GL.GL_CLIP_PLANE1);
         cuboid3.renderSelfByPoints(gl, glUtils, DrawType.LINE);
@@ -232,15 +225,15 @@ public class GLController implements GLEventListener {
         gl.glPointSize(10);
         gl.glBegin(GL.GL_POINTS);
         gl.glVertex3f(first.x, first.y, first.z);
-         gl.glVertex3f(second.x, second.y, second.z);
-         gl.glEnd();
-         gl.glLineWidth(1.6f);
-         gl.glColor3f(0, 0.8f, 0.3f);
-         gl.glBegin(GL.GL_LINES);
-          gl.glVertex3f(first.x, first.y, first.z);
-         gl.glVertex3f(second.x, second.y, second.z);
-         gl.glEnd();
-          gl.glLineWidth(1.0f);
+        gl.glVertex3f(second.x, second.y, second.z);
+        gl.glEnd();
+        gl.glLineWidth(1.6f);
+        gl.glColor3f(0, 0.8f, 0.3f);
+        gl.glBegin(GL.GL_LINES);
+        gl.glVertex3f(first.x, first.y, first.z);
+        gl.glVertex3f(second.x, second.y, second.z);
+        gl.glEnd();
+        gl.glLineWidth(1.0f);
 
         Point3D vect = first.substract(second).normalize();
         Point3D vect2 = first.substract(second).normalize();
@@ -350,6 +343,7 @@ public class GLController implements GLEventListener {
     }
 
     private float POINT_RADIUS = 0.2f;
+
     private void drawPoints(List<Point3D> ress, GL gl) {
         gl.glPushMatrix();
         gl.glColor3f(1, 0, 0);
@@ -360,7 +354,7 @@ public class GLController implements GLEventListener {
         }
         gl.glPointSize(1.0f);
         gl.glEnd();
-        gl.glColor3f((float)191f/255f,(float)193f/255f,(float)24f/255f);
+        gl.glColor3f((float) 191f / 255f, (float) 193f / 255f, (float) 24f / 255f);
         gl.glBegin(GL.GL_POLYGON);
         for (Point3D p : ress) {
             gl.glVertex3f(p.x, p.y, p.z);

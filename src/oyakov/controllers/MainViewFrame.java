@@ -147,43 +147,6 @@ public class MainViewFrame extends javax.swing.JFrame {
                 if (planeRight.isSelected()) {
                     jSpinner4.setValue(((Integer) jSpinner4.getValue()) + 1);
                 }
-                if(cameraLeftX.getModel().isPressed()) {
-                    appContext.cameraOffsetX -=0.5;
-                }
-                if(cameraRightX.getModel().isPressed()) {
-                    appContext.cameraOffsetX +=0.5;
-                }
-                  if(cameraLeftY.getModel().isPressed()) {
-                    appContext.cameraOffsetY -=0.5;
-                }
-                if(cameraRightY.getModel().isPressed()) {
-                    appContext.cameraOffsetY +=0.5;
-                }
-                if(cameraLeftZ.getModel().isPressed()) {
-                    appContext.cameraOffsetZ -=0.5;
-                }
-                if(cameraRightZ.getModel().isPressed()) {
-                    appContext.cameraOffsetZ +=0.5;
-                }
-                
-                 if(angleLeftX.getModel().isPressed()) {
-                    appContext.cameraAngleX -=0.5;
-                }
-                if(angleRightX.getModel().isPressed()) {
-                    appContext.cameraAngleX +=0.5;
-                }
-                 if(angleLeftY.getModel().isPressed()) {
-                    appContext.cameraAngleY -=0.5;
-                }
-                if(angleRightY.getModel().isPressed()) {
-                    appContext.cameraAngleY +=0.5;
-                }
-                 if(angleLeftZ.getModel().isPressed()) {
-                    appContext.cameraAngleZ -=0.5;
-                }
-                if(angleRightZ.getModel().isPressed()) {
-                    appContext.cameraAngleZ +=0.5;
-                }
             }
         });
         timer.start();
@@ -222,31 +185,11 @@ public class MainViewFrame extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        cameraLeftX = new javax.swing.JButton();
-        cameraRightX = new javax.swing.JButton();
-        cameraLeftY = new javax.swing.JButton();
-        cameraRightY = new javax.swing.JButton();
-        cameraRightZ = new javax.swing.JButton();
-        cameraLeftZ = new javax.swing.JButton();
-        angleRightZ = new javax.swing.JButton();
-        angleLeftZ = new javax.swing.JButton();
-        angleLeftY = new javax.swing.JButton();
-        angleRightY = new javax.swing.JButton();
-        angleLeftX = new javax.swing.JButton();
-        angleRightX = new javax.swing.JButton();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         secondX = new javax.swing.JSpinner();
         jLabel15 = new javax.swing.JLabel();
         secondY = new javax.swing.JSpinner();
         jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
         firstZ = new javax.swing.JSpinner();
         secondZ = new javax.swing.JSpinner();
 
@@ -255,7 +198,7 @@ public class MainViewFrame extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
-        jLabel1.setText("Вращать первый кубоид");
+        jLabel1.setText("Вращать первую фигуру");
 
         firstLeft.setText("<<");
         firstLeft.addActionListener(new java.awt.event.ActionListener() {
@@ -285,7 +228,7 @@ public class MainViewFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Вращать второй кубоид");
+        jLabel2.setText("Вращать вторую фигуру");
 
         thirdRight.setText(">>");
         thirdRight.addActionListener(new java.awt.event.ActionListener() {
@@ -301,7 +244,7 @@ public class MainViewFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("Вращать третий кубоид");
+        jLabel3.setText("Вращать третью фигуру");
 
         planeRight.setText(">>");
         planeRight.addActionListener(new java.awt.event.ActionListener() {
@@ -334,44 +277,6 @@ public class MainViewFrame extends javax.swing.JFrame {
 
         jLabel9.setText("Вторая точка плоскости");
 
-        cameraLeftX.setText("<<");
-        cameraLeftX.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cameraLeftXActionPerformed(evt);
-            }
-        });
-
-        cameraRightX.setText(">>");
-
-        cameraLeftY.setText("<<");
-
-        cameraRightY.setText(">>");
-
-        cameraRightZ.setText(">>");
-
-        cameraLeftZ.setText("<<");
-
-        angleRightZ.setText(">>");
-
-        angleLeftZ.setText("<<");
-
-        angleLeftY.setText("<<");
-
-        angleRightY.setText(">>");
-
-        angleLeftX.setText("<<");
-        angleLeftX.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                angleLeftXActionPerformed(evt);
-            }
-        });
-
-        angleRightX.setText(">>");
-
-        jLabel12.setText("Камера");
-
-        jLabel13.setText("Вращение сцены");
-
         jLabel14.setText("X");
 
         secondX.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), null, null, Float.valueOf(1.0f)));
@@ -382,18 +287,6 @@ public class MainViewFrame extends javax.swing.JFrame {
         secondY.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), null, null, Float.valueOf(1.0f)));
 
         jLabel16.setText("Z");
-
-        jLabel17.setText("X");
-
-        jLabel18.setText("Y");
-
-        jLabel19.setText("Z");
-
-        jLabel20.setText("X");
-
-        jLabel21.setText("Y");
-
-        jLabel22.setText("Z");
 
         firstZ.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), null, null, Float.valueOf(1.0f)));
 
@@ -420,8 +313,6 @@ public class MainViewFrame extends javax.swing.JFrame {
                         .addComponent(jLabel16)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(secondZ, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel12)
-                    .addComponent(jLabel13)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2)
@@ -456,45 +347,6 @@ public class MainViewFrame extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jLabel5)
                     .addComponent(jLabel9)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(angleLeftX, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cameraLeftX, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cameraLeftZ, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cameraLeftY, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cameraRightX, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cameraRightY, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cameraRightZ, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(angleRightX, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(angleLeftY, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(angleLeftZ, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(angleRightY, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(angleRightZ, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(jLabel6)
@@ -562,40 +414,6 @@ public class MainViewFrame extends javax.swing.JFrame {
                             .addComponent(jLabel15)
                             .addComponent(jLabel16)
                             .addComponent(secondZ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cameraLeftX)
-                            .addComponent(cameraRightX)
-                            .addComponent(jLabel17))
-                        .addGap(0, 0, 0)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cameraLeftY)
-                            .addComponent(cameraRightY)
-                            .addComponent(jLabel18))
-                        .addGap(0, 0, 0)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cameraLeftZ)
-                            .addComponent(cameraRightZ)
-                            .addComponent(jLabel19))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(angleLeftX)
-                            .addComponent(angleRightX)
-                            .addComponent(jLabel20))
-                        .addGap(0, 0, 0)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(angleLeftY)
-                            .addComponent(angleRightY)
-                            .addComponent(jLabel21))
-                        .addGap(0, 0, 0)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(angleLeftZ)
-                            .addComponent(angleRightZ)
-                            .addComponent(jLabel22))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE))
                 .addContainerGap())
@@ -636,50 +454,22 @@ public class MainViewFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_planeLeftActionPerformed
 
-    private void cameraLeftXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cameraLeftXActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cameraLeftXActionPerformed
-
-    private void angleLeftXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_angleLeftXActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_angleLeftXActionPerformed
-
     public void setGLCanvas(GLCanvas canvas) {
         jPanel1.add(canvas);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton ThirdLeft;
-    private javax.swing.JButton angleLeftX;
-    private javax.swing.JButton angleLeftY;
-    private javax.swing.JButton angleLeftZ;
-    private javax.swing.JButton angleRightX;
-    private javax.swing.JButton angleRightY;
-    private javax.swing.JButton angleRightZ;
-    private javax.swing.JButton cameraLeftX;
-    private javax.swing.JButton cameraLeftY;
-    private javax.swing.JButton cameraLeftZ;
-    private javax.swing.JButton cameraRightX;
-    private javax.swing.JButton cameraRightY;
-    private javax.swing.JButton cameraRightZ;
     private javax.swing.JToggleButton firstLeft;
     private javax.swing.JToggleButton firstRight;
     private javax.swing.JSpinner firstX;
     private javax.swing.JSpinner firstY;
     private javax.swing.JSpinner firstZ;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

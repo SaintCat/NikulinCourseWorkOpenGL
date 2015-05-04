@@ -1,7 +1,9 @@
 package oyakov.model.type;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
@@ -12,6 +14,7 @@ public class Quard implements Renderable {
 
     private final Vertex[] vertices = new Vertex[4];
     private List<Point3D> listVertices = new ArrayList<>();
+    Color color;
 
     public Quard(Vertex v0, Vertex v1, Vertex v2, Vertex v3) {
         vertices[0] = v0;
@@ -37,6 +40,7 @@ public class Quard implements Renderable {
 
     @Override
     public void renderSelf(GL context, GLU glUtils, DrawType type) {
+      
         switch (type) {
             case LINE:
                 context.glBegin(GL.GL_LINE_LOOP);
@@ -68,30 +72,27 @@ public class Quard implements Renderable {
 
     @Override
     public void renderSelfByPoints(GL context, GLU glUtils, DrawType type) {
+          if(color == null) {
+            color = new Color(new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat());
+        }
         switch (type) {
             case LINE:
-              context.glLineWidth(1.7f);
+                context.glLineWidth(1.7f);
+                context.glColor3f(color.getRed()/255f, color.getGreen()/255f, color.getBlue()/255);
                 context.glBegin(GL.GL_LINE_LOOP);
-                context.glColor3f(1.0f, 0.0f, 0.0f);
                 context.glVertex3f(listVertices.get(0).x, listVertices.get(0).y, listVertices.get(0).z);
-                context.glColor3f(0.0f, 1.0f, 0.0f);
                 context.glVertex3f(listVertices.get(1).x, listVertices.get(1).y, listVertices.get(1).z);
-                context.glColor3f(0.0f, 0.0f, 1.0f);
                 context.glVertex3f(listVertices.get(2).x, listVertices.get(2).y, listVertices.get(2).z);
-                context.glColor3f(1.0f, 0.0f, 1.0f);
                 context.glVertex3f(listVertices.get(3).x, listVertices.get(3).y, listVertices.get(3).z);
                 context.glEnd();
-                    context.glLineWidth(0.4f);
+                context.glLineWidth(0.4f);
                 break;
             case FILL:
+               context.glColor3f(color.getRed()/255f, color.getGreen()/255f, color.getBlue()/255);
                 context.glBegin(GL.GL_QUADS);
-                context.glColor3f(1.0f, 0.0f, 0.0f);
                 context.glVertex3f(listVertices.get(0).x, listVertices.get(0).y, listVertices.get(0).z);
-                context.glColor3f(0.0f, 1.0f, 0.0f);
                 context.glVertex3f(listVertices.get(1).x, listVertices.get(1).y, listVertices.get(1).z);
-                context.glColor3f(0.0f, 0.0f, 1.0f);
                 context.glVertex3f(listVertices.get(2).x, listVertices.get(2).y, listVertices.get(2).z);
-                context.glColor3f(1.0f, 0.0f, 1.0f);
                 context.glVertex3f(listVertices.get(3).x, listVertices.get(3).y, listVertices.get(3).z);
                 context.glEnd();
         }
